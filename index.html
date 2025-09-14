@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Kalkulator Reorder Stok</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .card { padding: 20px; border: 1px solid #ccc; border-radius: 10px; width: 350px; }
+    input { width: 100%; padding: 8px; margin: 5px 0; }
+    button { padding: 10px; width: 100%; margin-top: 10px; }
+    .hasil { margin-top: 15px; font-weight: bold; }
+    .aman { color: green; }
+    .reorder { color: red; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Kalkulator Reorder Stok</h2>
+    <label>Stok Saat Ini:</label>
+    <input type="number" id="stok">
+    
+    <label>Rata-rata Penjualan Harian:</label>
+    <input type="number" id="penjualan">
+    
+    <label>Stok Minimum:</label>
+    <input type="number" id="minimum">
+    
+    <button onclick="hitung()">Hitung</button>
+    
+    <div class="hasil" id="output"></div>
+  </div>
+
+  <script>
+    function hitung() {
+      let stok = parseFloat(document.getElementById("stok").value);
+      let penjualan = parseFloat(document.getElementById("penjualan").value);
+      let minimum = parseFloat(document.getElementById("minimum").value);
+
+      if (!stok || !penjualan || !minimum) {
+        document.getElementById("output").innerHTML = "⚠️ Mohon isi semua input!";
+        return;
+      }
+
+      let ketahanan = stok / penjualan;
+      let today = new Date();
+      let habisDate = new Date();
+      habisDate.setDate(today.getDate() + ketahanan);
+
+      let status = stok <= minimum ? 
+        `<span class="reorder">🚨 Harus Reorder</span>` : 
+        `<span class="aman">✅ Aman</span>`;
+
+      document.getElementById("output").innerHTML = `
+        📦 Ketahanan Stok: ${ketahanan.toFixed(1)} hari<br>
+        📅 Perkiraan Habis: ${habisDate.toLocaleDateString("id-ID")}<br>
+        🔔 Status: ${status}
+      `;
+    }
+  </script>
+</body>
+</html>
